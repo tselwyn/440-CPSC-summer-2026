@@ -8,7 +8,7 @@ int main() {
 	al_init();
 	al_init_primitives_addon();
 	ALLEGRO_DISPLAY* display = al_create_display(640, 480);
-	// background 
+	
 	   //    background
 	al_clear_to_color(al_map_rgb(135, 206, 235));
 
