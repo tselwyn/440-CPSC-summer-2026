@@ -9,7 +9,15 @@ int main() {
 	//  body -  rectangle
 	al_draw_filled_rectangle(200, 200, 450, 400, al_map_rgb(139, 69, 19));
 	//  - roof for house 
+	
 	al_draw_filled_triangle(180, 200, 470, 200, 325, 100, al_map_rgb(178, 34, 34));
+
+
+	// Door - rectangle
+	al_draw_filled_rectangle(290, 300, 360, 400, al_map_rgb(85, 45, 10));
+
+	// Sun -  circle
+	 al_draw_filled_circle(550, 80, 50, al_map_rgb(255, 255, 0));
 
 
 
