@@ -19,7 +19,11 @@ int main() {
 	// Sun -  circle
 	 al_draw_filled_circle(550, 80, 50, al_map_rgb(255, 255, 0));
 
+	 al_flip_display();
+	 al_rest(5.0);
+	 al_destroy_display(display);
 
+	 return 0;
 
 
 
