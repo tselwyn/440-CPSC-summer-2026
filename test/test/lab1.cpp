@@ -1,5 +1,9 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
+// Tyler Selwyn
+// CPSC 440 - Game Programming
+// Lab 1 - Drawing with Allegro Primitives
+// This program draws a house scene using Allegro 5 primitives
 int main() {
 	al_init();
 	al_init_primitives_addon();
