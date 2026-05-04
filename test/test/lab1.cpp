@@ -1,6 +1,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 int main() {
+	al_init();
+	al_init_primitives_addon();
 	ALLEGRO_DISPLAY* display = al_create_display(640, 480);
 	// background 
 	   //    background
@@ -9,7 +11,7 @@ int main() {
 	//  body -  rectangle
 	al_draw_filled_rectangle(200, 200, 450, 400, al_map_rgb(139, 69, 19));
 	//  - roof for house 
-	
+
 	al_draw_filled_triangle(180, 200, 470, 200, 325, 100, al_map_rgb(178, 34, 34));
 
 
@@ -17,13 +19,13 @@ int main() {
 	al_draw_filled_rectangle(290, 300, 360, 400, al_map_rgb(85, 45, 10));
 
 	// Sun -  circle
-	 al_draw_filled_circle(550, 80, 50, al_map_rgb(255, 255, 0));
+	al_draw_filled_circle(550, 80, 50, al_map_rgb(255, 255, 0));
 
-	 al_flip_display();
-	 al_rest(5.0);
-	 al_destroy_display(display);
+	al_flip_display();
+	al_rest(5.0);
+	al_destroy_display(display);
 
-	 return 0;
+	return 0;
 
 
 
