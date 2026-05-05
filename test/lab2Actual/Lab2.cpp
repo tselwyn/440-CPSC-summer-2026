@@ -69,4 +69,31 @@ int main() {
         al_draw_filled_circle(pos_x, pos_y, 20, al_map_rgb(0, 255, 0));
 
 
+        // pointer showing direction
+        if (direction == 0) // up
+            al_draw_line(pos_x, pos_y, pos_x, pos_y - 30, al_map_rgb(255, 255, 0), 3);
+        else if (direction == 1) // down
+            al_draw_line(pos_x, pos_y, pos_x, pos_y + 30, al_map_rgb(255, 255, 0), 3);
+        else if (direction == 2) // right
+            al_draw_line(pos_x, pos_y, pos_x + 30, pos_y, al_map_rgb(255, 255, 0), 3);
+        else if (direction == 3) // left
+            al_draw_line(pos_x, pos_y, pos_x - 30, pos_y, al_map_rgb(255, 255, 0), 3);
+        else if (direction == 4) // upper left
+            al_draw_line(pos_x, pos_y, pos_x - 25, pos_y - 25, al_map_rgb(255, 255, 0), 3);
+        else if (direction == 5) // lower right
+            al_draw_line(pos_x, pos_y, pos_x + 25, pos_y + 25, al_map_rgb(255, 255, 0), 3);
+        else if (direction == 6) // upper right
+            al_draw_line(pos_x, pos_y, pos_x + 25, pos_y - 25, al_map_rgb(255, 255, 0), 3);
+        else if (direction == 7) // lower left
+            al_draw_line(pos_x, pos_y, pos_x - 25, pos_y + 25, al_map_rgb(255, 255, 0), 3);
+
+        al_flip_display();
+    }
+
+    al_destroy_event_queue(event_queue);
+    al_destroy_display(display);
+    return 0;
+}
+
+
   
