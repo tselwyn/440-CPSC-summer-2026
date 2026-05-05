@@ -65,3 +65,31 @@ int main() {
                 break;
             }
         }
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+        al_draw_filled_circle(pos_x, pos_y, 20, al_map_rgb(0, 255, 0));
+
+        // Pointer based on direction
+        if (direction == 0)
+            al_draw_filled_triangle(pos_x, pos_y - 30, pos_x - 8, pos_y - 20, pos_x + 8, pos_y - 20, al_map_rgb(255, 255, 0));
+        else if (direction == 1)
+            al_draw_filled_triangle(pos_x, pos_y + 30, pos_x - 8, pos_y + 20, pos_x + 8, pos_y + 20, al_map_rgb(255, 255, 0));
+        else if (direction == 2)
+            al_draw_filled_triangle(pos_x + 30, pos_y, pos_x + 20, pos_y - 8, pos_x + 20, pos_y + 8, al_map_rgb(255, 255, 0));
+        else if (direction == 3)
+            al_draw_filled_triangle(pos_x - 30, pos_y, pos_x - 20, pos_y - 8, pos_x - 20, pos_y + 8, al_map_rgb(255, 255, 0));
+        else if (direction == 4)
+            al_draw_filled_triangle(pos_x - 25, pos_y - 25, pos_x - 20, pos_y - 10, pos_x - 10, pos_y - 20, al_map_rgb(255, 255, 0));
+        else if (direction == 5)
+            al_draw_filled_triangle(pos_x + 25, pos_y + 25, pos_x + 20, pos_y + 10, pos_x + 10, pos_y + 20, al_map_rgb(255, 255, 0));
+        else if (direction == 6)
+            al_draw_filled_triangle(pos_x + 25, pos_y - 25, pos_x + 20, pos_y - 10, pos_x + 10, pos_y - 20, al_map_rgb(255, 255, 0));
+        else if (direction == 7)
+            al_draw_filled_triangle(pos_x - 25, pos_y + 25, pos_x - 20, pos_y + 10, pos_x - 10, pos_y + 20, al_map_rgb(255, 255, 0));
+
+        al_flip_display();
+    }
+
+    al_destroy_event_queue(event_queue);
+    al_destroy_display(display);
+    return 0;
+}
