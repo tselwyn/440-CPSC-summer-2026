@@ -137,6 +137,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="lab1.cpp" />
+    <ClCompile Include="Lab2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
