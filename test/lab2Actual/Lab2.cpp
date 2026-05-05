@@ -1,5 +1,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
+// Tyler Selwyn
+// CPSC 440 - Lab 2
+// Moving object with directional pointer using keyboard input
 
 int main() {
     al_init();
@@ -10,14 +13,14 @@ int main() {
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_display_event_source(display));
-
+    // starting position is center of screen 
     int pos_x = 320;
     int pos_y = 240;
     int direction = 0;
     bool done = false;
     ALLEGRO_EVENT ev;
 
-
+    //while loop for  keys 
     while (!done) {
         al_wait_for_event(event_queue, &ev);
 
@@ -69,7 +72,7 @@ int main() {
         al_draw_filled_circle(pos_x, pos_y, 20, al_map_rgb(0, 255, 0));
 
 
-        // pointer showing direction
+        // pointer showing direction 
         if (direction == 0) // up
             al_draw_line(pos_x, pos_y, pos_x, pos_y - 30, al_map_rgb(255, 255, 0), 3);
         else if (direction == 1) // down
