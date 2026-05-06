@@ -37,3 +37,39 @@ int main() {
     char coord_text[50];
 
    
+
+
+    while (!done) {
+        al_wait_for_event(event_queue, &ev);
+
+        if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+            // move object to where mouse clicked
+            pos_x = ev.mouse.x;
+            pos_y = ev.mouse.y;
+
+            // check which quadrant was clicked
+            if (pos_x < width / 2 && pos_y < height / 2) {
+                // upper left - white bg, black text
+                bg_color = al_map_rgb(255, 255, 255);
+                text_color = al_map_rgb(0, 0, 0);
+            }
+            else if (pos_x >= width / 2 && pos_y < height / 2) {
+                // upper right - black bg, white text
+                bg_color = al_map_rgb(0, 0, 0);
+                text_color = al_map_rgb(255, 255, 255);
+            }
+            else if (pos_x < width / 2 && pos_y >= height / 2) {
+                // lower left - blue bg, yellow text
+                bg_color = al_map_rgb(0, 0, 255);
+                text_color = al_map_rgb(255, 255, 0);
+            }
+            else {
+                // lower right - yellow bg, blue text
+                bg_color = al_map_rgb(255, 255, 0);
+                text_color = al_map_rgb(0, 0, 255);
+            }
+        }
+        else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+            if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+                done = true;
+        }
