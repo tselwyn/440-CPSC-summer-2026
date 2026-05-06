@@ -73,3 +73,22 @@ int main() {
             if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
                 done = true;
         }
+
+
+
+        // draw everything
+        al_clear_to_color(bg_color);
+        al_draw_filled_circle(pos_x, pos_y, 20, al_map_rgb(255, 0, 0));
+
+        // print x y location
+        sprintf_s(coord_text, "X: %d  Y: %d", pos_x, pos_y);
+        al_draw_text(font, text_color, 10, 10, 0, coord_text);
+
+        al_flip_display();
+    }
+
+    al_destroy_font(font);
+    al_destroy_event_queue(event_queue);
+    al_destroy_display(display);
+    return 0;
+}
