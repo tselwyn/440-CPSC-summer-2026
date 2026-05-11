@@ -70,3 +70,35 @@ bool logic::createLists() {
     }
 
     file.close(); 
+
+    // Make sure we have enough words for the game
+    if (smallWordLength < 2 || mediumWordLength < 2 || largeWordLength < 1) {
+        cout << "Not enough words in each category to play." << endl;
+        return false;
+    }
+
+    return true;
+}
+
+// Scramble a word by shuffling its letters
+string logic::scrambler(string word) {
+    string scrambled = word;
+    int len = scrambled.length();
+
+    // Fisher-Yates shuffle
+    for (int i = len - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        char temp = scrambled[i];
+        scrambled[i] = scrambled[j];
+        scrambled[j] = temp;
+    }
+
+    // If it came out the same, just swap first two letters
+    if (scrambled == word && len > 1) {
+        char temp = scrambled[0];
+        scrambled[0] = scrambled[1];
+        scrambled[1] = temp;
+    }
+
+    return scrambled;
+}
