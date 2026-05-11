@@ -69,4 +69,4 @@ bool logic::createLists() {
         }
     }
 
-    file.close();
+    file.close(); 
