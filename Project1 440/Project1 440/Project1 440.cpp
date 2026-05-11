@@ -1,20 +1,51 @@
-// Project1 440.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+// program1Game.cpp
+// Main file - handles Allegro timer and threading
+// CPSC 440 - Program 1: Word Scramble Game
 
+#include <allegro5/allegro.h>
 #include <iostream>
+#include <string>
+#include "logic.h"
 
-int main()
-{
-    std::cout << "Hello World!\n";
+using namespace std;
+
+// Three global variables for timer/thread communication
+bool timeUp = false;
+string userInput = "";
+bool inputReceived = false;
+
+// Input thread function - reads user input on separate thread
+// so the timer can keep counting in main
+void* inputThread(ALLEGRO_THREAD* thread, void* arg) {
+    string input;
+    getline(cin, input);
+    if (!timeUp) {
+        userInput = input;
+        inputReceived = true;
+    }
+    return NULL;
 }
+int main() {
+    // Initialize Alllegro
+    al_init();
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+    // Create game logic object
+    logic game;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+    // Show intro
+    game.introduction();
+
+    // Load dicctionary
+    if (!game.createLists()) {
+        cout << "Could not load dictionary. Make sure dictionary.txt is in the right folder." << endl;
+        return 1;
+    }
+
+    // Play the game
+    game.playGame();
+
+    // Show results
+    game.end();
+
+    return 0;
+}
