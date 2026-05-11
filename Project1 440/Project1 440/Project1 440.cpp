@@ -25,7 +25,7 @@ void* inputThread(ALLEGRO_THREAD* thread, void* arg) {
     }
     return NULL;
 }
-int main() {
+int main() { 
     // Initialize Alllegro
     al_init();
 
