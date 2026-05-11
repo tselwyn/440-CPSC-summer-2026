@@ -1,51 +1,38 @@
-// program1Game.cpp
-// Main file - handles Allegro timer and threading
-// CPSC 440 - Program 1: Word Scramble Game
+// logic.cpp
+// Implementation of the word scramble game logic
+// CPSC 440 - Program 1
 
+#include "logic.h"
 #include <allegro5/allegro.h>
 #include <iostream>
-#include <string>
-#include "logic.h"
+#include <fstream>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
-// Three global variables for timer/thread communication
-bool timeUp = false;
-string userInput = "";
-bool inputReceived = false;
+// Reference the global variables from program1Game.cpp
+extern bool timeUp;
+extern string userInput;
+extern bool inputReceived;
+extern void* inputThread(ALLEGRO_THREAD* thread, void* arg);
 
-// Input thread function - reads user input on separate thread
-// so the timer can keep counting in main
-void* inputThread(ALLEGRO_THREAD* thread, void* arg) {
-    string input;
-    getline(cin, input);
-    if (!timeUp) {
-        userInput = input;
-        inputReceived = true;
-    }
-    return NULL;
+// Constructor - set everything to zero
+logic::logic() {
+    numCorrect = 0;
+    smallWordLength = 0;
+    mediumWordLength = 0;
+    largeWordLength = 0;
 }
-int main() {
-    // Initialize Alllegro
-    al_init();
 
-    // Create game logic object
-    logic game;
-
-    // Show intro
-    game.introduction();
-
-    // Load dicctionary
-    if (!game.createLists()) {
-        cout << "Could not load dictionary. Make sure dictionary.txt is in the right folder." << endl;
-        return 1;
-    }
-
-    // Play the game
-    game.playGame();
-
-    // Show results
-    game.end();
-
-    return 0;
+// Display the game introduction
+void logic::introduction() {
+    cout << "=================================" << endl;
+    cout << "   WORD SCRAMBLE CHALLENGE" << endl;
+    cout << "=================================" << endl;
+    cout << "Think you're smart? Prove it!" << endl;
+    cout << "Unscramble 5 words to test your brainpower." << endl;
+    cout << "You get 60 seconds per word. No pressure." << endl;
+    cout << "=================================" << endl;
+    cout << endl;
 }
