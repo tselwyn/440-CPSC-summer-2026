@@ -152,8 +152,10 @@ bool logic::playGame() {
         // Timer loop - wait up to 60 seconds
         double startTime = al_get_time();
         while (!inputReceived && !timeUp) {
-            if (al_get_time() - startTime >= 60.0) {
+            if (al_get_time() - startTime >= 60.0) { 
                 timeUp = true;
             }
             al_rest(0.05);
         }
+
+
