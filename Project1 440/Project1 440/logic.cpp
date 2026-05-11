@@ -25,3 +25,27 @@ void* inputThread(ALLEGRO_THREAD* thread, void* arg) {
     }
     return NULL;
 }
+int main() {
+    // Initialize Alllegro
+    al_init();
+
+    // Create game logic object
+    logic game;
+
+    // Show intro
+    game.introduction();
+
+    // Load dicctionary
+    if (!game.createLists()) {
+        cout << "Could not load dictionary. Make sure dictionary.txt is in the right folder." << endl;
+        return 1;
+    }
+
+    // Play the game
+    game.playGame();
+
+    // Show results
+    game.end();
+
+    return 0;
+}
