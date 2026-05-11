@@ -23,7 +23,7 @@ void* inputThread(ALLEGRO_THREAD* thread, void* arg) {
         userInput = input;
         inputReceived = true;
     }
-    return NULL;
+    return NULL; 
 }
 int main() { 
     // Initialize Alllegro
