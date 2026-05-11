@@ -102,3 +102,58 @@ string logic::scrambler(string word) {
 
     return scrambled;
 }
+
+
+// Run the 5-round game
+bool logic::playGame() {
+    srand(time(0));
+    numCorrect = 0;
+
+    string gameWords[5];
+
+    // Pick 2 random small words
+    int idx1 = rand() % smallWordLength;
+    int idx2;
+    do {
+        idx2 = rand() % smallWordLength;
+    } while (idx2 == idx1 && smallWordLength > 1);
+    gameWords[0] = smallWords[idx1];
+    gameWords[1] = smallWords[idx2];
+
+    // Pick 2 random medium words
+    idx1 = rand() % mediumWordLength;
+    do {
+        idx2 = rand() % mediumWordLength;
+    } while (idx2 == idx1 && mediumWordLength > 1);
+    gameWords[2] = mediumWords[idx1];
+    gameWords[3] = mediumWords[idx2];
+
+    // Pick 1 random large word
+    gameWords[4] = largeWords[rand() % largeWordLength];
+
+    // Play each round
+    for (int i = 0; i < 5; i++) {
+        string scrambled = scrambler(gameWords[i]);
+
+        cout << "\n--- Round " << (i + 1) << " of 5 ---" << endl;
+        cout << "Unscramble this: " << scrambled << endl;
+        cout << "You have 60 seconds!" << endl;
+        cout << "Your answer: ";
+
+        // Reset the global flags
+        timeUp = false;
+        inputReceived = false;
+        userInput = "";
+
+        // Start a thread to get user input
+        ALLEGRO_THREAD* inThread = al_create_thread(inputThread, NULL);
+        al_start_thread(inThread);
+
+        // Timer loop - wait up to 60 seconds
+        double startTime = al_get_time();
+        while (!inputReceived && !timeUp) {
+            if (al_get_time() - startTime >= 60.0) {
+                timeUp = true;
+            }
+            al_rest(0.05);
+        }
