@@ -159,3 +159,52 @@ bool logic::playGame() {
         }
 
 
+
+
+        // Check what happened
+        if (inputReceived && !timeUp) {
+            if (userInput == gameWords[i]) {
+                cout << "Correct! Nice one!" << endl;
+                numCorrect++;
+            }
+            else {
+                cout << "Nope! The answer was: " << gameWords[i] << endl;
+            }
+        }
+        else {
+            cout << "\nTime's up! The answer was: " << gameWords[i] << endl;
+        }
+
+        al_destroy_thread(inThread);
+    }
+
+    return (numCorrect >= 3);
+}
+
+// Display the final results and intellect rating
+void logic::end() {
+    cout << "\n=================================" << endl;
+    cout << "   FINAL RESULTS" << endl;
+    cout << "=================================" << endl;
+    cout << "You got " << numCorrect << " out of 5 correct!" << endl;
+    cout << endl;
+
+    if (numCorrect <= 1) {
+        cout << "Oof... maybe words aren't your thing. Try checkers?" << endl;
+    }
+    else if (numCorrect == 2) {
+        cout << "Novice Thinker! Your brain is just getting warmed up." << endl;
+    }
+    else if (numCorrect == 3) {
+        cout << "Sharp Mind! You're smarter than the average bear." << endl;
+    }
+    else if (numCorrect == 4) {
+        cout << "Word Wizard! Seriously impressive brainpower." << endl;
+    }
+    else {
+        cout << "GENIUS LEVEL! You absolutely crushed it!" << endl;
+    }
+
+    cout << "=================================" << endl;
+    cout << "Thanks for playing!" << endl;
+}
