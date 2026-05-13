@@ -78,3 +78,6 @@ void logic::done(bool& tie, bool& xwon, bool& owon)
 		}
 	}
 }
+
+
+

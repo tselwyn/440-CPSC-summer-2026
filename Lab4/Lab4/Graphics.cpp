@@ -236,5 +236,5 @@ void game_message(bool& gameover, logic& game_logic, ALLEGRO_FONT* font)
 		gameover = true;
 	}
 	else
-		al_draw_text(font, al_map_rgb(255, 255, 255), 1, 400, ALLEGRO_ALIGN_LEFT, "Pick a Square");
+		al_draw_text(font, al_map_rgb(255, 255, 255), 420, 440, ALLEGRO_ALIGN_LEFT, "Pick a Square");
 }
