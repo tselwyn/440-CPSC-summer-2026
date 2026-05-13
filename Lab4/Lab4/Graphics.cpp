@@ -6,7 +6,7 @@
 #include "logic.h"
 
 
-void set_graphics_x_o(int x, int y, logic& game_logic);
+void set_graphics_x_o(int x, int y, int& turn, logic& game_logic);
 void draw_board();
 void draw_x(int x, int y);
 void draw_o(int x, int y);
@@ -18,6 +18,7 @@ int main(void)
 	logic  game_logic;
 	int posX = 0, posY = 0;
 	bool gameover = false;
+	int turn = 0;
 	ALLEGRO_DISPLAY* Screen = NULL;
 	int width = 640, height = 480;
 
@@ -82,7 +83,7 @@ int main(void)
 		if (draw)
 		{
 
-			set_graphics_x_o(posX, posY, game_logic);
+			set_graphics_x_o(posX, posY, turn, game_logic);
 
 			draw = false;
 		}
@@ -138,9 +139,8 @@ void turn_xo(int x, int y, int& turn, int boardx, int boardy, logic& game_logic)
 		}
 	}
 }
-void set_graphics_x_o(int x, int y, logic& game_logic)
+void set_graphics_x_o(int x, int y, int& turn, logic& game_logic)
 {
-	static int turn = 0;
 	if ((x < 213) && (y < 125))
 	{
 		turn_xo(106, 62, turn, 0, 0, game_logic);
