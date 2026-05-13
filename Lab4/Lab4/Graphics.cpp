@@ -4,6 +4,8 @@
 #include <allegro5\allegro_primitives.h>	
 #include <allegro5\allegro_native_dialog.h> 
 #include "logic.h"
+#include <cstdlib>
+#include <ctime>
 
 
 void set_graphics_x_o(int x, int y, int& turn, logic& game_logic);
@@ -43,6 +45,8 @@ int main(void)
 	al_init_primitives_addon();
 	al_init_font_addon();
 	al_init_ttf_addon();
+
+	srand(time(0));
 
 	bool draw = false, done = false;;
 
@@ -87,6 +91,26 @@ int main(void)
 
 			draw = false;
 		}
+
+		// Computer AI - plays O when turn is 1
+		if (turn == 1 && !gameover)
+		{
+			bool placed = false;
+			while (!placed)
+			{
+				int randX = rand() % 640;
+				int randY = rand() % 375;
+				set_graphics_x_o(randX, randY, turn, game_logic);
+				if (turn == 0)
+				{
+					placed = true;
+				}
+			}
+			game_message(gameover, game_logic);
+		}
+
+		draw = false;
+
 		al_flip_display();
 	}
 	al_rest(5.0);
