@@ -80,7 +80,7 @@ int main(void)
 		}
 		draw_board();
 		game_message(gameover, game_logic);
-		if (draw)
+		if (draw && turn == 0)
 		{
 
 			set_graphics_x_o(posX, posY, turn, game_logic);
