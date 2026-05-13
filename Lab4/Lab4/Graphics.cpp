@@ -11,12 +11,11 @@
 #include <cstdlib>
 #include <ctime>
 
-// added int &turn parameter to set_graphics_x_o
 void set_graphics_x_o(int x, int y, int& turn, logic& game_logic);
 void draw_board();
 void draw_x(int x, int y);
 void draw_o(int x, int y);
-void game_message(bool& gameover, logic& game_logic);
+void game_message(bool& gameover, logic& game_logic, ALLEGRO_FONT* font);
 void turn_xo(int x, int y, int& turn, int boardx, int boardy, logic& game_logic);
 
 int main(void)
@@ -51,6 +50,14 @@ int main(void)
 	al_init_primitives_addon();
 	al_init_font_addon();
 	al_init_ttf_addon();
+
+	// Load font once here instead of every function call
+	ALLEGRO_FONT* font = al_load_font("C:\\Windows\\Fonts\\arial.ttf", 24, 0);
+	if (!font)
+	{
+		al_show_native_message_box(Screen, "Error!", "Failed to load font.", 0, 0, ALLEGRO_MESSAGEBOX_ERROR);
+		return (-1);
+	}
 
 	// Seed random for computer AI
 	srand(time(0));
@@ -97,7 +104,7 @@ int main(void)
 		}
 
 		// check if game is over after X plays
-		game_message(gameover, game_logic);
+		game_message(gameover, game_logic, font);
 
 		// computer plays when turn == 1 and game is not over
 		if (turn == 1 && !gameover)
@@ -123,7 +130,7 @@ int main(void)
 			}
 
 			// check if game is over after O plays
-			game_message(gameover, game_logic);
+			game_message(gameover, game_logic, font);
 		}
 
 		// Reset draw flag
@@ -133,6 +140,7 @@ int main(void)
 	}
 
 	al_rest(5.0);
+	al_destroy_font(font);
 	al_destroy_event_queue(event_queue);
 	al_destroy_display(Screen);
 
@@ -164,7 +172,6 @@ void draw_o(int x, int y)
 
 void turn_xo(int x, int y, int& turn, int boardx, int boardy, logic& game_logic)
 {
-	ALLEGRO_FONT* font = al_load_font("C:\\Windows\\Fonts\\arial.ttf", 24, 0);
 	if (turn == 0)
 	{
 		if (game_logic.set_x(boardx, boardy) == true)
@@ -183,11 +190,8 @@ void turn_xo(int x, int y, int& turn, int boardx, int boardy, logic& game_logic)
 	}
 }
 
-// added int &turn parameter
 void set_graphics_x_o(int x, int y, int& turn, logic& game_logic)
 {
-	// removed static int turn = 0; (now passed by reference from main)
-
 	if ((x < 213) && (y < 125))
 	{
 		turn_xo(106, 62, turn, 0, 0, game_logic);
@@ -226,11 +230,10 @@ void set_graphics_x_o(int x, int y, int& turn, logic& game_logic)
 	}
 }
 
-void game_message(bool& gameover, logic& game_logic)
+void game_message(bool& gameover, logic& game_logic, ALLEGRO_FONT* font)
 {
 	bool xwon = false, owon = false, tie = false;
 	game_logic.done(tie, xwon, owon);
-	ALLEGRO_FONT* font = al_load_font("C:\\Windows\\Fonts\\arial.ttf", 24, 0);
 
 	if (tie == true)
 	{
