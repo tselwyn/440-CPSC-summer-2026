@@ -1,3 +1,7 @@
+// graphics.cpp
+// Lab 4 - Tic Tac Toe with Computer AI
+// CPSC 440
+
 #include <allegro5\allegro.h>
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_ttf.h>
@@ -7,7 +11,7 @@
 #include <cstdlib>
 #include <ctime>
 
-
+// added int &turn parameter to set_graphics_x_o
 void set_graphics_x_o(int x, int y, int& turn, logic& game_logic);
 void draw_board();
 void draw_x(int x, int y);
@@ -17,10 +21,13 @@ void turn_xo(int x, int y, int& turn, int boardx, int boardy, logic& game_logic)
 
 int main(void)
 {
-	logic  game_logic;
+	logic game_logic;
 	int posX = 0, posY = 0;
 	bool gameover = false;
+
+	// moved turn to main
 	int turn = 0;
+
 	ALLEGRO_DISPLAY* Screen = NULL;
 	int width = 640, height = 480;
 
@@ -29,7 +36,6 @@ int main(void)
 		al_show_native_message_box(NULL, "Error!", "Allegro has failed to initialize.", 0, 0, ALLEGRO_MESSAGEBOX_ERROR);
 		return (-1);
 	}
-
 
 	Screen = al_create_display(width, height);
 	if (Screen == NULL)
@@ -46,28 +52,27 @@ int main(void)
 	al_init_font_addon();
 	al_init_ttf_addon();
 
+	// Seed random for computer AI
 	srand(time(0));
 
-	bool draw = false, done = false;;
+	bool draw = false, done = false;
 
 	ALLEGRO_EVENT_QUEUE* event_queue = NULL;
-
 	event_queue = al_create_event_queue();
-
 
 	al_register_event_source(event_queue, al_get_display_event_source(Screen));
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-
 	al_register_event_source(event_queue, al_get_mouse_event_source());
 
 	game_logic.setup();
 	draw_board();
-
 	al_flip_display();
+
 	while (!done && !gameover)
 	{
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
+
 		if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
 			done = true;
@@ -78,41 +83,50 @@ int main(void)
 			{
 				posX = ev.mouse.x;
 				posY = ev.mouse.y;
-
 				draw = true;
 			}
 		}
+
 		draw_board();
-		game_message(gameover, game_logic);
+
+		// only let human play when turn == 0
 		if (draw && turn == 0)
 		{
-
 			set_graphics_x_o(posX, posY, turn, game_logic);
-
 			draw = false;
 		}
 
-		// Computer AI - plays O when turn is 1
+		// check if game is over after X plays
+		game_message(gameover, game_logic);
+
+		// computer plays when turn == 1 and game is not over
 		if (turn == 1 && !gameover)
 		{
 			bool placed = false;
 			while (!placed)
 			{
+				// Random x across full width, random y only in playable area (0-374)
 				int randX = rand() % 640;
 				int randY = rand() % 375;
 				set_graphics_x_o(randX, randY, turn, game_logic);
+
+				// If turn changed back to 0, the O was placed successfully
 				if (turn == 0)
 				{
 					placed = true;
 				}
 			}
+
+			// check if game is over after O plays
 			game_message(gameover, game_logic);
 		}
 
+		// Reset draw flag
 		draw = false;
 
 		al_flip_display();
 	}
+
 	al_rest(5.0);
 	al_destroy_event_queue(event_queue);
 	al_destroy_display(Screen);
@@ -130,19 +144,19 @@ void draw_board()
 	al_draw_line(0, 250, 640, 250, al_map_rgb(255, 255, 255), 2);
 	al_draw_line(213, 0, 213, 375, al_map_rgb(255, 255, 255), 2);
 	al_draw_line(426, 0, 426, 375, al_map_rgb(255, 255, 255), 2);
-
-
 }
+
 void draw_x(int x, int y)
 {
 	al_draw_line(x - 106, y - 62, x + 106, y + 62, al_map_rgb(255, 0, 0), 2);
 	al_draw_line(x - 106, y + 62, x + 106, y - 62, al_map_rgb(255, 0, 0), 2);
 }
+
 void draw_o(int x, int y)
 {
 	al_draw_circle(x, y, 62, al_map_rgb(255, 255, 0), 4);
-
 }
+
 void turn_xo(int x, int y, int& turn, int boardx, int boardy, logic& game_logic)
 {
 	ALLEGRO_FONT* font = al_load_font("C:\\Windows\\Fonts\\arial.ttf", 24, 0);
@@ -163,8 +177,12 @@ void turn_xo(int x, int y, int& turn, int boardx, int boardy, logic& game_logic)
 		}
 	}
 }
+
+// added int &turn parameter
 void set_graphics_x_o(int x, int y, int& turn, logic& game_logic)
 {
+	// removed static int turn = 0; (now passed by reference from main)
+
 	if ((x < 213) && (y < 125))
 	{
 		turn_xo(106, 62, turn, 0, 0, game_logic);
@@ -180,7 +198,6 @@ void set_graphics_x_o(int x, int y, int& turn, logic& game_logic)
 	else if ((x < 213) && (y > 125) && (y < 250))
 	{
 		turn_xo(106, 186, turn, 1, 0, game_logic);
-
 	}
 	else if ((x > 213) && (x < 426) && (y > 125) && (y < 250))
 	{
@@ -193,7 +210,6 @@ void set_graphics_x_o(int x, int y, int& turn, logic& game_logic)
 	else if ((x < 213) && (y > 250) && (y < 375))
 	{
 		turn_xo(106, 314, turn, 2, 0, game_logic);
-
 	}
 	else if ((x > 213) && (x < 426) && (y > 250) && (y < 375))
 	{
@@ -228,5 +244,4 @@ void game_message(bool& gameover, logic& game_logic)
 	}
 	else
 		al_draw_text(font, al_map_rgb(255, 255, 255), 1, 400, ALLEGRO_ALIGN_LEFT, "Pick a Square");
-
 }
