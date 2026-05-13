@@ -102,15 +102,20 @@ int main(void)
 		// computer plays when turn == 1 and game is not over
 		if (turn == 1 && !gameover)
 		{
+			// center x coordinates for columns 0, 1, 2
+			int centerX[3] = { 106, 319, 533 };
+			// center y coordinates for rows 0, 1, 2
+			int centerY[3] = { 62, 186, 314 };
+
 			bool placed = false;
 			while (!placed)
 			{
-				// Random x across full width, random y only in playable area (0-374)
-				int randX = rand() % 640;
-				int randY = rand() % 375;
-				set_graphics_x_o(randX, randY, turn, game_logic);
+				// pick a random cell on the board
+				int col = rand() % 3;
+				int row = rand() % 3;
+				set_graphics_x_o(centerX[col], centerY[row], turn, game_logic);
 
-				// If turn changed back to 0, the O was placed successfully
+				// if turn changed back to 0, O was placed successfully
 				if (turn == 0)
 				{
 					placed = true;
