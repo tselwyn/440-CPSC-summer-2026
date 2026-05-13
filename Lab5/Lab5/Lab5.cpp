@@ -47,3 +47,30 @@ int main() {
 
     bool done = false;
     ALLEGRO_EVENT ev;
+
+
+
+
+
+
+    while (!done) {
+        al_wait_for_event(event_queue, &ev);
+
+        if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+            if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+                done = true;
+        }
+
+        al_clear_to_color(al_map_rgb(10, 10, 30));
+
+        // draw the ship bitmap centered on screen
+        al_draw_bitmap(ship, (width / 2) - 32, (height / 2) - 32, 0);
+
+        al_flip_display();
+    }
+
+    al_destroy_bitmap(ship);
+    al_destroy_event_queue(event_queue);
+    al_destroy_display(display);
+    return 0;
+}
