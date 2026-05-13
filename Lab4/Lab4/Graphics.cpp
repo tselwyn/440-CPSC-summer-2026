@@ -103,8 +103,11 @@ int main(void)
 			draw = false;
 		}
 
-		// computer plays when turn == 1
-		if (turn == 1)
+		// check if game is over after X plays before AI goes
+		game_message(gameover, game_logic, font);
+
+		// computer plays when turn == 1 and game is not over
+		if (turn == 1 && !gameover)
 		{
 			// center x coordinates for columns 0, 1, 2
 			int centerX[3] = { 106, 319, 533 };
@@ -130,7 +133,7 @@ int main(void)
 		// Reset draw flag
 		draw = false;
 
-		// check game status once after both players have gone
+		// check game status after both players have gone
 		game_message(gameover, game_logic, font);
 
 		al_flip_display();
