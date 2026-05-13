@@ -190,44 +190,29 @@ void turn_xo(int x, int y, int& turn, int boardx, int boardy, logic& game_logic)
 	}
 }
 
+// fixed to eliminate boundary gaps - no more missed clicks
 void set_graphics_x_o(int x, int y, int& turn, logic& game_logic)
 {
-	if ((x < 213) && (y < 125))
-	{
-		turn_xo(106, 62, turn, 0, 0, game_logic);
-	}
-	else if ((x > 213) && (x < 426) && (y < 125))
-	{
-		turn_xo(319, 62, turn, 0, 1, game_logic);
-	}
-	else if ((x > 426) && (y < 125))
-	{
-		turn_xo(533, 62, turn, 0, 2, game_logic);
-	}
-	else if ((x < 213) && (y > 125) && (y < 250))
-	{
-		turn_xo(106, 186, turn, 1, 0, game_logic);
-	}
-	else if ((x > 213) && (x < 426) && (y > 125) && (y < 250))
-	{
-		turn_xo(319, 186, turn, 1, 1, game_logic);
-	}
-	else if ((x > 426) && (y > 125) && (y < 250))
-	{
-		turn_xo(533, 186, turn, 1, 2, game_logic);
-	}
-	else if ((x < 213) && (y > 250) && (y < 375))
-	{
-		turn_xo(106, 314, turn, 2, 0, game_logic);
-	}
-	else if ((x > 213) && (x < 426) && (y > 250) && (y < 375))
-	{
-		turn_xo(319, 314, turn, 2, 1, game_logic);
-	}
-	else if ((x > 426) && (y > 250) && (y < 375))
-	{
-		turn_xo(533, 314, turn, 2, 2, game_logic);
-	}
+	// ignore clicks below the board
+	if (y >= 375) return;
+
+	// figure out which column was clicked
+	int col;
+	if (x <= 213) col = 0;
+	else if (x <= 426) col = 1;
+	else col = 2;
+
+	// figure out which row was clicked
+	int row;
+	if (y <= 125) row = 0;
+	else if (y <= 250) row = 1;
+	else row = 2;
+
+	// center coordinates for drawing X and O
+	int centerX[3] = { 106, 319, 533 };
+	int centerY[3] = { 62, 186, 314 };
+
+	turn_xo(centerX[col], centerY[row], turn, row, col, game_logic);
 }
 
 void game_message(bool& gameover, logic& game_logic, ALLEGRO_FONT* font)
