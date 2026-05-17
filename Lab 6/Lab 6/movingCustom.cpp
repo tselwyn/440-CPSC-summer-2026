@@ -43,6 +43,11 @@ int main(void)
 
 	arrow.create_arrow_bitmap(display);
 
+	// Tyler Selwyn - create custom bullet bitmaps
+	for (int i = 0; i < 10; i++) {
+		mybullet[i].create_bullet_bitmap(display);
+	}
+
 	al_set_target_bitmap(al_get_backbuffer(display));
 	event_queue = al_create_event_queue();
 	timer = al_create_timer(1.0 / FPS);
@@ -60,7 +65,7 @@ int main(void)
 		if (ev.type == ALLEGRO_EVENT_TIMER)
 		{
 			redraw = true;
-			for (int i = 0;i < 10;i++)
+			for (int i = 0; i < 10; i++)
 			{
 				if (!mybullet[i].getStatus()) {
 					mybullet[i].fire();
@@ -96,7 +101,7 @@ int main(void)
 			case ALLEGRO_KEY_LEFT:
 				arrow.left();
 				break;
-			 case ALLEGRO_KEY_RIGHT:
+			case ALLEGRO_KEY_RIGHT:
 				arrow.right();
 				break;
 			}
@@ -110,14 +115,14 @@ int main(void)
 				arrow.move_arrow(width, 480);  // Tyler Selwyn - keep arrow in gameplay area above info bar
 			}
 			arrow.drawArrow();
-			for (int i = 0;i < 10;i++)
+			for (int i = 0; i < 10; i++)
 			{
 				mybullet[i].erase_bullet();
 				score += mybullet[i].move_bullet(arrow.getX(), arrow.getY(), 32, 32, 480);  // Tyler Selwyn - bullets stop at 480 not 520
 			}
 
 			// Tyler Selwyn - draw the info bar with timer and score
-			 al_draw_filled_rectangle(0, 480, 640, 520, al_map_rgb(0, 0, 0));
+			al_draw_filled_rectangle(0, 480, 640, 520, al_map_rgb(0, 0, 0));
 			char timerText[50];
 			char scoreText[50];
 			sprintf_s(timerText, "Time: %d", countdown);
