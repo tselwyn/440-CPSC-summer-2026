@@ -65,6 +65,15 @@ int main(void)
 					mybullet[i].fire();
 				}
 			}
+
+			// Tyler Selwyn - count frames to decrement the 30 sec timer
+			frameCount++;
+			if (frameCount >= 60) {
+				frameCount = 0;
+				countdown--;
+				if (countdown <= 0)
+					done = true;  // game over when timer runs out
+			}
 		}
 		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
@@ -86,7 +95,7 @@ int main(void)
 			case ALLEGRO_KEY_LEFT:
 				arrow.left();
 				break;
-			case ALLEGRO_KEY_RIGHT:
+			 case ALLEGRO_KEY_RIGHT:
 				arrow.right();
 				break;
 			}
@@ -97,14 +106,23 @@ int main(void)
 
 			if (arrow.getSpeed() != 0) {
 				arrow.erase_arrow();
-				arrow.move_arrow(width, height);
+				arrow.move_arrow(width, 480);  // Tyler Selwyn - keep arrow in gameplay area above info bar
 			}
 			arrow.drawArrow();
 			for (int i = 0;i < 10;i++)
 			{
 				mybullet[i].erase_bullet();
-				score += mybullet[i].move_bullet(arrow.getX(), arrow.getY(), 32, 32, height);
+				score += mybullet[i].move_bullet(arrow.getX(), arrow.getY(), 32, 32, 480);  // Tyler Selwyn - bullets stop at 480 not 520
 			}
+
+			// Tyler Selwyn - draw the info bar with timer and score
+			 al_draw_filled_rectangle(0, 480, 640, 520, al_map_rgb(0, 0, 0));
+			char timerText[50];
+			char scoreText[50];
+			sprintf_s(timerText, "Time: %d", countdown);
+			sprintf_s(scoreText, "Score: %d", score);
+			al_draw_text(font, al_map_rgb(255, 255, 255), 10, 490, 0, timerText);
+			al_draw_text(font, al_map_rgb(255, 255, 255), 550, 490, 0, scoreText);
 		}
 		al_flip_display();
 	}
