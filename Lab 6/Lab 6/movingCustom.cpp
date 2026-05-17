@@ -118,7 +118,7 @@ int main(void)
 			for (int i = 0; i < 10; i++)
 			{
 				mybullet[i].erase_bullet();
-				score += mybullet[i].move_bullet(arrow.getX(), arrow.getY(), 32, 32, 480);  // Tyler Selwyn - bullets stop at 480 not 520
+				score += mybullet[i].move_bullet(arrow.getX(), arrow.getY(), 64, 64, 480);  // Tyler Selwyn - updated collision to 64x64 for spaceship
 			}
 
 			// Tyler Selwyn - draw the info bar with timer and score
