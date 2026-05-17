@@ -1,7 +1,8 @@
 #include <allegro5\allegro.h>
 #include <allegro5\allegro_primitives.h>
 #include <allegro5\allegro_font.h>  // Tyler Selwyn - need font addon for text display
-#include "arrow.h";
+#include <cstdio>  // Tyler Selwyn - need this for sprintf_s
+#include "arrow.h"
 #include "bullet.h"
 
 int main(void)
