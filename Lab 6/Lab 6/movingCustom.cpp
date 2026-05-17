@@ -1,5 +1,6 @@
 #include <allegro5\allegro.h>
 #include <allegro5\allegro_primitives.h>
+#include <allegro5\allegro_font.h>  // Tyler Selwyn - need font addon for text display
 #include "arrow.h";
 #include "bullet.h"
 
@@ -12,8 +13,13 @@ int main(void)
 	const int FPS = 60;
 
 	int width = 640;
-	int height = 480;
+	int height = 520;  // Tyler Selwyn - made taller for info bar at bottom
 	bool done = false;
+
+	// Tyler Selwyn - timer and score display variables
+	int countdown = 30;    // 30 second game timer
+	int frameCount = 0;    // counts frames to track seconds
+	ALLEGRO_FONT* font = NULL;
 
 	ALLEGRO_DISPLAY* display = NULL;
 	ALLEGRO_EVENT_QUEUE* event_queue = NULL;
@@ -29,6 +35,11 @@ int main(void)
 
 	al_install_keyboard();
 	al_init_primitives_addon();
+
+	// Tyler Selwyn - init font so we can print timer and score
+	al_init_font_addon();
+	font = al_create_builtin_font();
+
 	arrow.create_arrow_bitmap(display);
 
 	al_set_target_bitmap(al_get_backbuffer(display));
@@ -97,6 +108,7 @@ int main(void)
 		}
 		al_flip_display();
 	}
+	al_destroy_font(font);  // Tyler Selwyn - clean up font
 	al_destroy_event_queue(event_queue);
 	al_destroy_timer(timer);
 	al_destroy_display(display);
