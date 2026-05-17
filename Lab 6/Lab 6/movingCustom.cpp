@@ -4,7 +4,7 @@
 #include <cstdio>  // Tyler Selwyn - need this for sprintf_s
 #include "arrow.h"
 #include "bullet.h"
-
+// Tyler Selwyn - CPSC 440 Lab 6
 int main(void)
 {
 	arrowClass arrow;

@@ -1,5 +1,6 @@
 #include <allegro5\allegro.h>
 #include <allegro5\allegro_primitives.h>
+// Tyler Selwyn - CPSC 440 Lab 6
 
 #define MAXSPEED 3
 

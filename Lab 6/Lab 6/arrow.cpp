@@ -1,4 +1,5 @@
 #include "arrow.h"
+// Tyler Selwyn - CPSC 440 Lab 6
 arrowClass::arrowClass()
 {
 	speed = 0;

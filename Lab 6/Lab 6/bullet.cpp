@@ -1,4 +1,5 @@
 #include "bullet.h"
+// Tyler Selwyn - CPSC 440 Lab 6
 bullet::bullet()
 {
 	alive = false;
