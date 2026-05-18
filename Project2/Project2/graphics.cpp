@@ -5,6 +5,18 @@
 #include <cstdio>
 #include <cmath>
 
+// draws any polygon as a fan of triangles from center
+void fill_polygon(float* points, int count, int cx, int cy, ALLEGRO_COLOR color) {
+    for (int i = 0; i < count; i++) {
+        int next = (i + 1) % count;
+        al_draw_filled_triangle(
+            (float)cx, (float)cy,
+            points[i * 2], points[i * 2 + 1],
+            points[next * 2], points[next * 2 + 1],
+            color);
+    }
+}
+
 // draws the 5x5 grid lines
 void draw_grid() {
     ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
@@ -45,7 +57,7 @@ void draw_rectangle_shape(int x, int y, ALLEGRO_COLOR color) {
 void draw_diamond_shape(int x, int y, ALLEGRO_COLOR color) {
     float points[8] = { (float)x, (float)(y - 40), (float)(x + 30), (float)y,
                          (float)x, (float)(y + 40), (float)(x - 30), (float)y };
-    al_draw_filled_polygon(points, 4, color);
+    fill_polygon(points, 4, x, y, color);
 }
 
 void draw_oval_shape(int x, int y, ALLEGRO_COLOR color) {
@@ -62,7 +74,7 @@ void draw_octagon_shape(int x, int y, ALLEGRO_COLOR color) {
         x + s, y + r,  x - s, y + r,
         x - r, y + s,  x - r, y - s
     };
-    al_draw_filled_polygon(points, 8, color);
+    fill_polygon(points, 8, x, y, color);
 }
 
 // 5 point star with outer and inner radius
@@ -78,7 +90,7 @@ void draw_star_shape(int x, int y, ALLEGRO_COLOR color) {
         points[i * 4 + 2] = x + inner * cos(angle_in);
         points[i * 4 + 3] = y + inner * sin(angle_in);
     }
-    al_draw_filled_polygon(points, 10, color);
+    fill_polygon(points, 10, x, y, color);
 }
 
 // two overlapping rectangles
@@ -101,7 +113,7 @@ void draw_hexagon_shape(int x, int y, ALLEGRO_COLOR color) {
         points[i * 2] = x + r * cos(angle);
         points[i * 2 + 1] = y + r * sin(angle);
     }
-    al_draw_filled_polygon(points, 6, color);
+    fill_polygon(points, 6, x, y, color);
 }
 
 void draw_pentagon_shape(int x, int y, ALLEGRO_COLOR color) {
@@ -112,7 +124,7 @@ void draw_pentagon_shape(int x, int y, ALLEGRO_COLOR color) {
         points[i * 2] = x + r * cos(angle);
         points[i * 2 + 1] = y + r * sin(angle);
     }
-    al_draw_filled_polygon(points, 5, color);
+    fill_polygon(points, 5, x, y, color);
 }
 
 // two circles on top with a triangle underneath

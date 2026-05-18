@@ -21,11 +21,14 @@ int main() {
     ALLEGRO_DISPLAY* display = al_create_display(CELL_SIZE * COLS, CELL_SIZE * ROWS);
     ALLEGRO_EVENT_QUEUE* event_queue = al_create_event_queue();
     ALLEGRO_FONT* font = al_create_builtin_font();
+    ALLEGRO_TIMER* timer = al_create_timer(1.0 / 30.0);
 
     // register all event sources including display
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_mouse_event_source());
     al_register_event_source(event_queue, al_get_display_event_source(display));
+    al_register_event_source(event_queue, al_get_timer_event_source(timer));
+    al_start_timer(timer);
 
     // game boards - pattern holds the answer, guess tracks reveals, played tracks matches
     ShapeType pattern[ROWS][COLS];
@@ -59,18 +62,28 @@ int main() {
                 done = true;
         }
 
-        // handle mouse clicks, blocked during mismatch wait
-        if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && !waiting) {
+        // handle mouse clicks
+        if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
             mx = ev.mouse.x;
             my = ev.mouse.y;
             int row, col;
             get_mouse_input(mx, my, row, col);
 
+            // if mismatch is on screen, this click clears it and starts new pair
+            if (waiting) {
+                waiting = false;
+                click_count = 0;
+                first_row = -1;
+                first_col = -1;
+                second_row = -1;
+                second_col = -1;
+            }
+
             if (row == 4 && col == 4) {
                 // status cell, ignore
             }
             else if (played[row][col]) {
-                // already matched
+                // already matched, can't re-click
             }
             else if (click_count == 0) {
                 // first card selection
@@ -80,7 +93,7 @@ int main() {
             }
             else if (click_count == 1) {
                 if (row == first_row && col == first_col) {
-                    // same cell, ignore
+                    // clicked same cell, ignore
                 }
                 else {
                     // second card selection
@@ -95,6 +108,10 @@ int main() {
                         matched++;
                         remaining--;
                         click_count = 0;
+                        first_row = -1;
+                        first_col = -1;
+                        second_row = -1;
+                        second_col = -1;
 
                         // check if all pairs found
                         if (remaining == 0) {
@@ -108,7 +125,7 @@ int main() {
                         }
                     }
                     else {
-                        // no match, show both for 5 seconds
+                        // no match, start auto-hide timer
                         waiting = true;
                         wait_start = al_get_time();
                     }
@@ -116,8 +133,8 @@ int main() {
             }
         }
 
-        // hide mismatched cards after 5 seconds
-        if (waiting && al_get_time() - wait_start >= 5.0) {
+        // auto-hide mismatched cards after 1.5 seconds
+        if (waiting && al_get_time() - wait_start >= 1.5) {
             waiting = false;
             click_count = 0;
             first_row = -1;
@@ -161,6 +178,7 @@ int main() {
     }
 
     // cleanup
+    al_destroy_timer(timer);
     al_destroy_font(font);
     al_destroy_event_queue(event_queue);
     al_destroy_display(display);
