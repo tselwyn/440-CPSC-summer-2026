@@ -4,6 +4,7 @@
 #include "graphics.h"
 #include <cmath>
 
+// draws the 5x5 grid lines
 void draw_grid() {
     ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
 
@@ -16,6 +17,7 @@ void draw_grid() {
     }
 }
 
+// figures out which cell was clicked based on pixel position
 void get_mouse_input(int mx, int my, int& row, int& col) {
     col = mx / CELL_SIZE;
     row = my / CELL_SIZE;
@@ -38,6 +40,7 @@ void draw_rectangle_shape(int x, int y, ALLEGRO_COLOR color) {
     al_draw_filled_rectangle(x - 35, y - 25, x + 35, y + 25, color);
 }
 
+// 4 point polygon rotated 45 degrees
 void draw_diamond_shape(int x, int y, ALLEGRO_COLOR color) {
     float points[8] = { (float)x, (float)(y - 40), (float)(x + 30), (float)y,
                          (float)x, (float)(y + 40), (float)(x - 30), (float)y };
@@ -48,6 +51,7 @@ void draw_oval_shape(int x, int y, ALLEGRO_COLOR color) {
     al_draw_filled_ellipse(x, y, 40, 25, color);
 }
 
+// 8-sided polygon
 void draw_octagon_shape(int x, int y, ALLEGRO_COLOR color) {
     float s = 18;
     float r = 40;
@@ -60,6 +64,7 @@ void draw_octagon_shape(int x, int y, ALLEGRO_COLOR color) {
     al_draw_filled_polygon(points, 8, color);
 }
 
+// 5 point star with outer and inner radius
 void draw_star_shape(int x, int y, ALLEGRO_COLOR color) {
     float outer = 40;
     float inner = 18;
@@ -75,11 +80,13 @@ void draw_star_shape(int x, int y, ALLEGRO_COLOR color) {
     al_draw_filled_polygon(points, 10, color);
 }
 
+// two overlapping rectangles
 void draw_cross_shape(int x, int y, ALLEGRO_COLOR color) {
     al_draw_filled_rectangle(x - 10, y - 35, x + 10, y + 35, color);
     al_draw_filled_rectangle(x - 35, y - 10, x + 35, y + 10, color);
 }
 
+// triangle on top, rectangle on bottom
 void draw_arrow_shape(int x, int y, ALLEGRO_COLOR color) {
     al_draw_filled_triangle(x, y - 40, x - 30, y, x + 30, y, color);
     al_draw_filled_rectangle(x - 12, y, x + 12, y + 35, color);
@@ -107,6 +114,7 @@ void draw_pentagon_shape(int x, int y, ALLEGRO_COLOR color) {
     al_draw_filled_polygon(points, 5, color);
 }
 
+// two circles on top with a triangle underneath
 void draw_heart_shape(int x, int y, ALLEGRO_COLOR color) {
     al_draw_filled_circle(x - 18, y - 10, 20, color);
     al_draw_filled_circle(x + 18, y - 10, 20, color);
@@ -120,21 +128,27 @@ void draw_matched(int x, int y) {
     al_draw_line(x + 35, y - 35, x - 35, y + 35, gray, 3);
 }
 
+// status info in the bottom-right cell
+void draw_status(ALLEGRO_FONT* font, int matched, int remaining) {
+    int x = 4 * CELL_SIZE + 10;
+    int y = 4 * CELL_SIZE + 20;
+
+    // green background for status cell
+    al_draw_filled_rectangle(4 * CELL_SIZE + 1, 4 * CELL_SIZE + 1,
+        5 * CELL_SIZE - 1, 5 * CELL_SIZE - 1, al_map_rgb(0, 80, 0));
+
+    char buf[50];
+    sprintf_s(buf, "Matched: %d", matched);
+    al_draw_text(font, al_map_rgb(255, 255, 255), x, y, 0, buf);
+
+    sprintf_s(buf, "Left: %d", remaining);
+    al_draw_text(font, al_map_rgb(255, 255, 255), x, y + 30, 0, buf);
+}
+
+// picks the right draw function based on shape type
 void draw_objects(int x, int y, ShapeType shape) {
     ALLEGRO_COLOR color;
     switch (shape) {
     case CIRCLE:    color = al_map_rgb(255, 0, 0); draw_circle_shape(x, y, color); break;
     case TRIANGLE:  color = al_map_rgb(0, 255, 0); draw_triangle_shape(x, y, color); break;
-    case RECTANGLE: color = al_map_rgb(0, 0, 255); draw_rectangle_shape(x, y, color); break;
-    case DIAMOND:   color = al_map_rgb(255, 255, 0); draw_diamond_shape(x, y, color); break;
-    case OVAL:      color = al_map_rgb(255, 0, 255); draw_oval_shape(x, y, color); break;
-    case OCTAGON:   color = al_map_rgb(0, 255, 255); draw_octagon_shape(x, y, color); break;
-    case STAR:      color = al_map_rgb(255, 128, 0); draw_star_shape(x, y, color); break;
-    case CROSS:     color = al_map_rgb(128, 255, 0); draw_cross_shape(x, y, color); break;
-    case ARROW:     color = al_map_rgb(0, 128, 255); draw_arrow_shape(x, y, color); break;
-    case HEXAGON:   color = al_map_rgb(255, 128, 128); draw_hexagon_shape(x, y, color); break;
-    case PENTAGON:  color = al_map_rgb(128, 128, 255); draw_pentagon_shape(x, y, color); break;
-    case HEART:     color = al_map_rgb(255, 64, 128); draw_heart_shape(x, y, color); break;
-    default: break;
-    }
-}
+    case RECTANGLE: color = al_map_rgb(0, 0, 25

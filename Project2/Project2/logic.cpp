@@ -5,18 +5,21 @@
 #include <cstdlib>
 #include <ctime>
 
+// returns shape at given position, EMPTY if out of bounds
 ShapeType get_shape(ShapeType board[][COLS], int row, int col) {
     if (row < 0 || row >= ROWS || col < 0 || col >= COLS)
         return EMPTY;
     return board[row][col];
 }
 
+// places a shape at given position with bounds checking
 void set_shape(ShapeType board[][COLS], int row, int col, ShapeType shape) {
     if (row < 0 || row >= ROWS || col < 0 || col >= COLS)
         return;
     board[row][col] = shape;
 }
 
+// checks if two cells hold the same shape
 bool compare(ShapeType board[][COLS], int r1, int c1, int r2, int c2) {
     return board[r1][c1] == board[r2][c2];
 }

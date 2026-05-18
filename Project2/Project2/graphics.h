@@ -9,13 +9,16 @@
 #include <allegro5/allegro_font.h>
 #include "logic.h"
 
+// pixel size of each grid cell
 const int CELL_SIZE = 120;
 
+// grid and status drawing
 void draw_grid();
 void draw_objects(int x, int y, ShapeType shape);
 void draw_status(ALLEGRO_FONT* font, int matched, int remaining);
 void draw_matched(int x, int y);
 
+// individual shape functions
 void draw_circle_shape(int x, int y, ALLEGRO_COLOR color);
 void draw_triangle_shape(int x, int y, ALLEGRO_COLOR color);
 void draw_rectangle_shape(int x, int y, ALLEGRO_COLOR color);
@@ -29,6 +32,7 @@ void draw_hexagon_shape(int x, int y, ALLEGRO_COLOR color);
 void draw_pentagon_shape(int x, int y, ALLEGRO_COLOR color);
 void draw_heart_shape(int x, int y, ALLEGRO_COLOR color);
 
+// converts mouse pixel coordinates to grid row/col
 void get_mouse_input(int mx, int my, int& row, int& col);
 
 #endif
