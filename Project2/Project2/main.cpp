@@ -24,7 +24,6 @@ int main() {
     al_register_event_source(event_queue, al_get_mouse_event_source());
     al_register_event_source(event_queue, al_get_display_event_source(display));
 
-    // game boards
     ShapeType pattern[ROWS][COLS];
     ShapeType guess[ROWS][COLS];
     bool played[ROWS][COLS];
@@ -37,6 +36,13 @@ int main() {
     bool done = false;
     ALLEGRO_EVENT ev;
 
+    // track the two clicks
+    int first_row = -1, first_col = -1;
+    int second_row = -1, second_col = -1;
+    int click_count = 0;
+    bool waiting = false;
+    double wait_start = 0;
+
     while (!done) {
         al_wait_for_event(event_queue, &ev);
 
@@ -48,9 +54,91 @@ int main() {
                 done = true;
         }
 
-        // draw
+        // handle mouse clicks
+        if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN && !waiting) {
+            mx = ev.mouse.x;
+            my = ev.mouse.y;
+            int row, col;
+            get_mouse_input(mx, my, row, col);
+
+            // skip status cell and already matched cells
+            if (row == 4 && col == 4) {
+                // do nothing
+            }
+            else if (played[row][col]) {
+                // already matched, ignore
+            }
+            else if (click_count == 0) {
+                first_row = row;
+                first_col = col;
+                click_count = 1;
+            }
+            else if (click_count == 1) {
+                // don't let them click the same cell twice
+                if (row == first_row && col == first_col) {
+                    // ignore
+                }
+                else {
+                    second_row = row;
+                    second_col = col;
+                    click_count = 2;
+
+                    // check for match
+                    if (compare(pattern, first_row, first_col, second_row, second_col)) {
+                        played[first_row][first_col] = true;
+                        played[second_row][second_col] = true;
+                        matched++;
+                        remaining--;
+                        click_count = 0;
+                    }
+                    else {
+                        // start 5 second wait
+                        waiting = true;
+                        wait_start = al_get_time();
+                    }
+                }
+            }
+        }
+
+        // check if 5 seconds passed for mismatch
+        if (waiting && al_get_time() - wait_start >= 5.0) {
+            waiting = false;
+            click_count = 0;
+            first_row = -1;
+            first_col = -1;
+            second_row = -1;
+            second_col = -1;
+        }
+
+        // draw everything
         al_clear_to_color(al_map_rgb(0, 0, 0));
         draw_grid();
+
+        // draw matched shapes
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (played[r][c]) {
+                    int cx = c * CELL_SIZE + CELL_SIZE / 2;
+                    int cy = r * CELL_SIZE + CELL_SIZE / 2;
+                    draw_objects(cx, cy, pattern[r][c]);
+                }
+            }
+        }
+
+        // draw first click reveal
+        if (click_count >= 1 && first_row >= 0) {
+            int cx = first_col * CELL_SIZE + CELL_SIZE / 2;
+            int cy = first_row * CELL_SIZE + CELL_SIZE / 2;
+            draw_objects(cx, cy, pattern[first_row][first_col]);
+        }
+
+        // draw second click reveal
+        if (click_count == 2 && second_row >= 0) {
+            int cx = second_col * CELL_SIZE + CELL_SIZE / 2;
+            int cy = second_row * CELL_SIZE + CELL_SIZE / 2;
+            draw_objects(cx, cy, pattern[second_row][second_col]);
+        }
+
         al_flip_display();
     }
 
