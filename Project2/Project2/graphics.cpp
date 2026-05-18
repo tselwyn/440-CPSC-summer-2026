@@ -2,18 +2,15 @@
 // Tyler Selwyn - CPSC 440 - Program 2
 
 #include "graphics.h"
-#include "graphics.h"
 #include <cmath>
 
 void draw_grid() {
     ALLEGRO_COLOR white = al_map_rgb(255, 255, 255);
 
-    // vertical lines
     for (int i = 0; i <= COLS; i++) {
         al_draw_line(i * CELL_SIZE, 0, i * CELL_SIZE, ROWS * CELL_SIZE, white, 2);
     }
 
-    // horizontal lines
     for (int i = 0; i <= ROWS; i++) {
         al_draw_line(0, i * CELL_SIZE, COLS * CELL_SIZE, i * CELL_SIZE, white, 2);
     }
@@ -23,13 +20,11 @@ void get_mouse_input(int mx, int my, int& row, int& col) {
     col = mx / CELL_SIZE;
     row = my / CELL_SIZE;
 
-    // bounds check
     if (row < 0) row = 0;
     if (row >= ROWS) row = ROWS - 1;
     if (col < 0) col = 0;
     if (col >= COLS) col = COLS - 1;
 }
-
 
 void draw_circle_shape(int x, int y, ALLEGRO_COLOR color) {
     al_draw_filled_circle(x, y, 40, color);
@@ -66,7 +61,6 @@ void draw_octagon_shape(int x, int y, ALLEGRO_COLOR color) {
 }
 
 void draw_star_shape(int x, int y, ALLEGRO_COLOR color) {
-    // 5 point star using triangles
     float outer = 40;
     float inner = 18;
     float points[20];
@@ -87,7 +81,6 @@ void draw_cross_shape(int x, int y, ALLEGRO_COLOR color) {
 }
 
 void draw_arrow_shape(int x, int y, ALLEGRO_COLOR color) {
-    // arrow pointing up
     al_draw_filled_triangle(x, y - 40, x - 30, y, x + 30, y, color);
     al_draw_filled_rectangle(x - 12, y, x + 12, y + 35, color);
 }
@@ -115,13 +108,18 @@ void draw_pentagon_shape(int x, int y, ALLEGRO_COLOR color) {
 }
 
 void draw_heart_shape(int x, int y, ALLEGRO_COLOR color) {
-    // two circles on top, triangle on bottom
     al_draw_filled_circle(x - 18, y - 10, 20, color);
     al_draw_filled_circle(x + 18, y - 10, 20, color);
     al_draw_filled_triangle(x - 38, y - 2, x + 38, y - 2, x, y + 40, color);
 }
 
-// draws the right shape based on the enum
+// draws an X over matched cells
+void draw_matched(int x, int y) {
+    ALLEGRO_COLOR gray = al_map_rgb(100, 100, 100);
+    al_draw_line(x - 35, y - 35, x + 35, y + 35, gray, 3);
+    al_draw_line(x + 35, y - 35, x - 35, y + 35, gray, 3);
+}
+
 void draw_objects(int x, int y, ShapeType shape) {
     ALLEGRO_COLOR color;
     switch (shape) {
