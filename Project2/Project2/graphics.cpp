@@ -2,6 +2,7 @@
 // Tyler Selwyn - CPSC 440 - Program 2
 
 #include "graphics.h"
+#include <cstdio>
 #include <cmath>
 
 // draws the 5x5 grid lines
@@ -151,4 +152,16 @@ void draw_objects(int x, int y, ShapeType shape) {
     switch (shape) {
     case CIRCLE:    color = al_map_rgb(255, 0, 0); draw_circle_shape(x, y, color); break;
     case TRIANGLE:  color = al_map_rgb(0, 255, 0); draw_triangle_shape(x, y, color); break;
-    case RECTANGLE: color = al_map_rgb(0, 0, 25
+    case RECTANGLE: color = al_map_rgb(0, 0, 255); draw_rectangle_shape(x, y, color); break;
+    case DIAMOND:   color = al_map_rgb(255, 255, 0); draw_diamond_shape(x, y, color); break;
+    case OVAL:      color = al_map_rgb(255, 0, 255); draw_oval_shape(x, y, color); break;
+    case OCTAGON:   color = al_map_rgb(0, 255, 255); draw_octagon_shape(x, y, color); break;
+    case STAR:      color = al_map_rgb(255, 128, 0); draw_star_shape(x, y, color); break;
+    case CROSS:     color = al_map_rgb(128, 255, 0); draw_cross_shape(x, y, color); break;
+    case ARROW:     color = al_map_rgb(0, 128, 255); draw_arrow_shape(x, y, color); break;
+    case HEXAGON:   color = al_map_rgb(255, 128, 128); draw_hexagon_shape(x, y, color); break;
+    case PENTAGON:  color = al_map_rgb(128, 128, 255); draw_pentagon_shape(x, y, color); break;
+    case HEART:     color = al_map_rgb(255, 64, 128); draw_heart_shape(x, y, color); break;
+    default: break;
+    }
+}

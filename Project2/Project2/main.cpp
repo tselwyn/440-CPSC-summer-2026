@@ -87,3 +87,82 @@ int main() {
                     second_row = row;
                     second_col = col;
                     click_count = 2;
+
+                    if (compare(pattern, first_row, first_col, second_row, second_col)) {
+                        // match found
+                        played[first_row][first_col] = true;
+                        played[second_row][second_col] = true;
+                        matched++;
+                        remaining--;
+                        click_count = 0;
+
+                        // check if all pairs found
+                        if (remaining == 0) {
+                            al_clear_to_color(al_map_rgb(0, 0, 0));
+                            al_draw_text(font, al_map_rgb(255, 255, 255),
+                                CELL_SIZE * COLS / 2, CELL_SIZE * ROWS / 2,
+                                ALLEGRO_ALIGN_CENTRE, "YOU WIN!");
+                            al_flip_display();
+                            al_rest(3);
+                            done = true;
+                        }
+                    }
+                    else {
+                        // no match, show both for 5 seconds
+                        waiting = true;
+                        wait_start = al_get_time();
+                    }
+                }
+            }
+        }
+
+        // hide mismatched cards after 5 seconds
+        if (waiting && al_get_time() - wait_start >= 5.0) {
+            waiting = false;
+            click_count = 0;
+            first_row = -1;
+            first_col = -1;
+            second_row = -1;
+            second_col = -1;
+        }
+
+        // draw everything
+        al_clear_to_color(al_map_rgb(0, 0, 0));
+        draw_grid();
+
+        // draw matched shapes with X over them
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (played[r][c]) {
+                    int cx = c * CELL_SIZE + CELL_SIZE / 2;
+                    int cy = r * CELL_SIZE + CELL_SIZE / 2;
+                    draw_objects(cx, cy, pattern[r][c]);
+                    draw_matched(cx, cy);
+                }
+            }
+        }
+
+        // show first selected card
+        if (click_count >= 1 && first_row >= 0) {
+            int cx = first_col * CELL_SIZE + CELL_SIZE / 2;
+            int cy = first_row * CELL_SIZE + CELL_SIZE / 2;
+            draw_objects(cx, cy, pattern[first_row][first_col]);
+        }
+
+        // show second selected card
+        if (click_count == 2 && second_row >= 0) {
+            int cx = second_col * CELL_SIZE + CELL_SIZE / 2;
+            int cy = second_row * CELL_SIZE + CELL_SIZE / 2;
+            draw_objects(cx, cy, pattern[second_row][second_col]);
+        }
+
+        draw_status(font, matched, remaining);
+        al_flip_display();
+    }
+
+    // cleanup
+    al_destroy_font(font);
+    al_destroy_event_queue(event_queue);
+    al_destroy_display(display);
+    return 0;
+}
