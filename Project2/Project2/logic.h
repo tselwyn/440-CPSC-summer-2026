@@ -4,6 +4,7 @@
 #ifndef LOGIC_H
 #define LOGIC_H
 
+
 // Shape types for the game pieces
 enum ShapeType {
     EMPTY,
@@ -40,4 +41,6 @@ void reset_game(ShapeType pattern[][COLS], ShapeType guess[][COLS], bool played[
 // Randomly place pairs on the pattern board
 void random_create(ShapeType pattern[][COLS], int num_pairs);
 
+
+   
 #endif
