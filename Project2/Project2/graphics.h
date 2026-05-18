@@ -34,5 +34,4 @@ void draw_heart_shape(int x, int y, ALLEGRO_COLOR color);
 
 // converts mouse pixel coordinates to grid row/col
 void get_mouse_input(int mx, int my, int& row, int& col);
-
 #endif
